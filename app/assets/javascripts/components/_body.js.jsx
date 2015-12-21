@@ -10,8 +10,21 @@ var Body = React.createClass({
     let newState = this.state.skills.concat(skill);
     this.setState({ skills: newState })
   },
-  handleDelete() {
-    console.log('in handle delete');
+  handleDelete(id) {
+    $.ajax({
+      url: `/api/v1/skills/${id}`,
+      type: 'DELETE',
+      success: function() {
+        this.removeIdeaFromDOM(id);
+      }.bind(this)
+    });
+  },
+  removeIdeaFromDOM(id) {
+    let newSkills = this.state.skills.filter((skill) => {
+      return skill.id != id;
+    });
+
+    this.setState({ skills: newSkills });
   },
 
   render() {
