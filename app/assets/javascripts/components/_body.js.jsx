@@ -1,9 +1,15 @@
 var Body = React.createClass({
+  getInitialState() {
+    return { skills: []}
+  },
+  componentDidMount() {
+    $.getJSON('/api/v1/skills.json', (response) => { this.setState({ skills: response }) });
+  },
   render() {
     return (
       <div>
      <NewSkill />
-     <AllSkills />
+     <AllSkills skills={this.state.skills}/>
      </div>
     )
   }
