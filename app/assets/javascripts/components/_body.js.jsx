@@ -19,6 +19,24 @@ var Body = React.createClass({
       }.bind(this)
     });
   },
+  handleUpdate(skill) {
+    $.ajax({
+      url: `/api/v1/skills/${skill.id}`,
+      type: 'PUT',
+      data: { skill: skill },
+      success: () => {
+        console.log('you did it');
+        this.updateSkills(skill);
+        // callback to swap objects
+      }
+    });
+  },
+  updateSkills(skill) {
+    let skills = this.state.skills.filter((s) => { return s.id != skill.id });
+    skills.push(skill);
+
+    this.setState({ skills: skills });
+  },
   removeIdeaFromDOM(id) {
     let newSkills = this.state.skills.filter((skill) => {
       return skill.id != id;
@@ -31,7 +49,9 @@ var Body = React.createClass({
     return (
       <div>
       <NewSkill handleSubmit={this.handleSubmit} />
-      <AllSkills skills={this.state.skills} handleDelete={this.handleDelete}/>
+      <AllSkills skills={this.state.skills}
+                 handleDelete={this.handleDelete}
+                 handleUpdate={this.handleUpdate}/>
       </div>
     )
   }
